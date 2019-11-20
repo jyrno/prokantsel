@@ -10,7 +10,6 @@ export default class App extends React.Component {
     super(props, context);
     this.state = {
       listItems: [],
-      words: [],
       bulpitWords: [],
     };
   }
@@ -36,17 +35,7 @@ export default class App extends React.Component {
   }
 
   highlight = async () => {
-    return await Word.run(async context => {
-
-      // let paragraph = context.document.body.paragraphs.getFirst();
-      // let words = paragraph.split([" "], true /* trimDelimiters*/, true /* trimSpaces */);
-      // words.load("text");
-    
-      // await context.sync();
-      // console.log(words);
-
-
-
+    return Word.run(async context => {
 
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
@@ -56,7 +45,7 @@ export default class App extends React.Component {
       const allSentencesObjects = [];
       const allSentences = [];
 
-      documentParagraphs.items.forEach(async (paragraph) => {
+      documentParagraphs.items.forEach((paragraph) => {
         paragraph.load("text");
         allParagraphs.push(paragraph);
         const sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
@@ -84,7 +73,6 @@ export default class App extends React.Component {
       console.log(allSentences.length);
 
       this.setState({
-        words: text,
         bulpitWords: [
           {
             word: "Hello",
