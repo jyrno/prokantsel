@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Button, ButtonType } from "office-ui-fabric-react";
-import Header from "./Header";
+import BulpitWordItem from "./BulpitWordItem";
 import { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
 /* global Button Header, HeroList, HeroListItem, Progress, Word */
@@ -83,9 +83,9 @@ export default class App extends React.Component {
       });
 
 
-      let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
-      sentences.load("text");
-      await context.sync();
+      // let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+      // sentences.load("text");
+      // await context.sync();
       // console.log(sentences);
 
 
@@ -105,10 +105,32 @@ export default class App extends React.Component {
       // });
       //let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
 
-
-    
-      // console.log(sentences);
-
+      this.setState({
+        words: text,
+        bulpitWords: [
+          {
+            word: "Hello",
+            description: "Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini ",
+            type: "kantseliit",
+          },
+          {
+            word: "Word",
+            description: "Veel paremini",
+            type: "paronyym",
+          },
+          {
+            word: "Test",
+            description: "Miks mitte veel paremini",
+            type: "tarind",
+          },
+          {
+            word: "Word",
+            description: "Veel paremini",
+            type: "paronyym",
+          }
+        ],
+      });
+      console.log(text);
     });
   };
 
@@ -123,28 +145,26 @@ export default class App extends React.Component {
 
     return (
       <div className="ms-welcome">
-        {/* <Header logo="assets/logo-filled.png" title={this.props.title} message="Welcome" /> */}
-        <main className="ms-welcome__main">
+        <main className="ms-welcome__main taskpane">
           <Button
-            className="ms-welcome__action"
+            className="ms-welcome__action bulpit__button"
             buttonType={ButtonType.hero}
-            iconProps={{ iconName: "ChevronRight" }}
             onClick={this.highlight}
           >
-            Käivita
+            Leia kantseliidid
           </Button>
           {this.state.bulpitWords.length > 0 && (
             <p className="ms-font-l">
               Kantseliitsed sõnad:
             </p>
           )}
-          {this.state.bulpitWords.map((bulpitIndex) => (
-            <Fragment key={bulpitIndex}>
-              <div>
-                {this.state.words[bulpitIndex]}
-              </div>
-              <br />
-            </Fragment>
+          {this.state.bulpitWords.map((bulpitObject, idx) => (
+            <BulpitWordItem
+              key={idx}
+              word={bulpitObject.word}
+              description={bulpitObject.description}
+              type={bulpitObject.type}
+            />
           ))}
         </main>
       </div>
