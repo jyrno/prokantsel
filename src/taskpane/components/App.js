@@ -46,64 +46,42 @@ export default class App extends React.Component {
       // console.log(words);
 
 
+
+
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
       await context.sync();
       // console.log(documentParagraphs.items[0]);
       const allParagraphs = [];
+      const allSentencesObjects = [];
       const allSentences = [];
+
       documentParagraphs.items.forEach(async (paragraph) => {
         paragraph.load("text");
-        await context.sync();
         allParagraphs.push(paragraph);
-      });
-
-      console.log(allParagraphs);
-      const allParagraphsCopy = [...allParagraphs];
-      console.log(allParagraphs);
-      console.log(allParagraphsCopy.slice(0).length);
-
-      allParagraphsCopy.slice(0).forEach( async (paragraph) => {
-        console.log(paragraph);
-
         const sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
         sentences.load("text");
-        await context.sync();
-        console.log(sentences);
-        //console.log(sentences);
-        //console.log(sentences.items.length);
-        sentences.items.forEach(async (sentence) => {
-            
-            allSentences.push(sentence);
-            sentence.load("text");
-            await context.sync();
-      //     let words = sentence.split([" "], false /* trimDelimiters*/, true /* trimSpaces */);
+        allSentencesObjects.push(sentences);
+        
+      });
+      await context.sync();
 
+      console.log(allParagraphs);
+      console.log(allParagraphs.length);
+
+      console.log(allSentencesObjects);
+      console.log(allSentencesObjects.length);
+
+      allSentencesObjects.forEach((sentencesObject) => {
+        sentencesObject.items.forEach((sentence) => {
+          sentence.load("text");
+          allSentences.push(sentence);
         });
       });
+      await context.sync();
 
-
-      // let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
-      // sentences.load("text");
-      // await context.sync();
-      // console.log(sentences);
-
-
-      // let documentParagraphs = context.document.body.paragraphs;
-      // documentParagraphs.items.forEach(async (paragraph) => {
-      //   console.log(paragraph);
-      //   let sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
-      //   sentences.load("text");
-      //   await context.sync();
-      //   console.log(sentences);
-      //   sentences.items.forEach(async (sentence) => {
-      //     let words = sentence.split([" "], false /* trimDelimiters*/, true /* trimSpaces */);
-      //     words.load("text");
-      //     await context.sync();
-      //     console.log(words);
-      //   });
-      // });
-      //let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+      console.log(allSentences);
+      console.log(allSentences.length);
 
       this.setState({
         words: text,
@@ -130,7 +108,7 @@ export default class App extends React.Component {
           }
         ],
       });
-      console.log(text);
+      
     });
   };
 
