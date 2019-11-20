@@ -35,71 +35,80 @@ export default class App extends React.Component {
     });
   }
 
-  click = async () => {
-    return Word.run(async context => {
-      /**
-       * Insert your Word code here
-       */
-
-      // insert a paragraph at the end of the document.
-      const paragraph = context.document.body.insertParagraph("Hello World", Word.InsertLocation.end);
-
-      // change the paragraph color to blue.
-      paragraph.font.color = "blue";
-      context.document.body.select();
-
-      await context.sync();
-    });
-  };
-
   highlight = async () => {
-    return Word.run(async context => {
+    return await Word.run(async context => {
 
-      var body = context.document.body;
-      const myParagraphs = body.paragraphs;
-      myParagraphs.load("text");
-      await context.sync();
-
-      myParagraphs.items.forEach(element => {
-        console.log(element.text);
-        element.font.color = "red";
-      });
-      // context.load(body, 'text');
-
-      // insert a paragraph at the end of the document.
-      const paragraph = context.document.body.insertParagraph("JOUOE", Word.InsertLocation.end);
-      paragraph.font.color = "blue";
-      //console.log(paragraph);
-
-
-      // await context.sync();
-      //console.log("tes3322");
-
-      let paragraphs = context.document.body.paragraphs;
-      paragraphs.load("text");
-      //console.log("tes3322");
-
-      await context.sync();
+      // let paragraph = context.document.body.paragraphs.getFirst();
+      // let words = paragraph.split([" "], true /* trimDelimiters*/, true /* trimSpaces */);
+      // words.load("text");
     
-      let text = [];
-      paragraphs.items.forEach((item) => {
-        let paragraph = item.text.trim();
-        console.log(item.text);
+      // await context.sync();
+      // console.log(words);
 
-        if (paragraph) {
-          paragraph.split(" ").forEach((term) => {
-            let currentTerm = term.trim();
-            if (currentTerm) {
-              text.push(currentTerm);
-            }
-          });
-        }
+
+      let documentParagraphs = context.document.body.paragraphs;
+      documentParagraphs.load("text");
+      await context.sync();
+      // console.log(documentParagraphs.items[0]);
+      const allParagraphs = [];
+      const allSentences = [];
+      documentParagraphs.items.forEach(async (paragraph) => {
+        paragraph.load("text");
+        await context.sync();
+        allParagraphs.push(paragraph);
       });
-      this.setState({
-        words: text,
-        bulpitWords: [2,3],
+
+      console.log(allParagraphs);
+      const allParagraphsCopy = [...allParagraphs];
+      console.log(allParagraphs);
+      console.log(allParagraphsCopy.slice(0).length);
+
+      allParagraphsCopy.slice(0).forEach( async (paragraph) => {
+        console.log(paragraph);
+
+        const sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+        sentences.load("text");
+        await context.sync();
+        console.log(sentences);
+        //console.log(sentences);
+        //console.log(sentences.items.length);
+        sentences.items.forEach(async (sentence) => {
+            
+            allSentences.push(sentence);
+            sentence.load("text");
+            await context.sync();
+      //     let words = sentence.split([" "], false /* trimDelimiters*/, true /* trimSpaces */);
+
+        });
       });
-      console.log(text);
+
+
+      let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+      sentences.load("text");
+      await context.sync();
+      // console.log(sentences);
+
+
+      // let documentParagraphs = context.document.body.paragraphs;
+      // documentParagraphs.items.forEach(async (paragraph) => {
+      //   console.log(paragraph);
+      //   let sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+      //   sentences.load("text");
+      //   await context.sync();
+      //   console.log(sentences);
+      //   sentences.items.forEach(async (sentence) => {
+      //     let words = sentence.split([" "], false /* trimDelimiters*/, true /* trimSpaces */);
+      //     words.load("text");
+      //     await context.sync();
+      //     console.log(words);
+      //   });
+      // });
+      //let sentences = documentParagraphs.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
+
+
+    
+      // console.log(sentences);
+
     });
   };
 
