@@ -36,111 +36,65 @@ export default class App extends React.Component {
 
   highlight = async () => {
     return Word.run(async context => {
-      const response = await fetch("https://demo2624123.mockable.io/", {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrer: 'no-referrer', // no-referrer, *client
-      });
-      const responseJson = await response.json();
-      console.log(responseJson);
+
+      let documentBody = context.document.body;
+      documentBody.load("text");
+      await context.sync();
 
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
       await context.sync();
-      // console.log(documentParagraphs.items[0]);
-      const allParagraphs = [];
-      const allSentencesObjects = [];
-      const allSentences = [];
 
-      documentParagraphs.items.forEach((paragraph) => {
-        paragraph.load("text");
-        allParagraphs.push(paragraph);
-        const sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
-        sentences.load("text");
-        allSentencesObjects.push(sentences);
-
+      const response = await fetch("https://demo2624123.mockable.io/", {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: 'follow', // manual, *follow, error
+          referrer: 'no-referrer', // no-referrer, *client
+          body: JSON.stringify(documentBody.text) 
       });
-      await context.sync();
 
-      console.log(allParagraphs);
-      console.log(allParagraphs.length);
+      const responseJson = await response.json();
+      const matchingStrings = [];
+      const searchResultObjects = [];
 
-      // console.log(allSentencesObjects);
-      // console.log(allSentencesObjects.length);
+      responseJson.analysis.forEach(async analysis => {
+        console.log("Searching for word: " + analysis.text);
+        const searchResult = documentBody.search(analysis.text);
+        searchResult.load("text");
+        searchResultObjects.push(searchResult);
+        console.log(searchResult);
+      });
+      await context.sync();  
+      console.log(searchResultObjects);
 
-      allSentencesObjects.forEach((sentencesObject) => {
-        sentencesObject.items.forEach((sentence) => {
-          sentence.load("text");
-          allSentences.push(sentence);
+      searchResultObjects.forEach(object => {
+        object.items.forEach(resultItem => {
+          resultItem.load("text");
+          matchingStrings.push(resultItem);
         });
       });
       await context.sync();
+      console.log(matchingStrings);
 
-      console.log(allSentences);
-      console.log(allSentences.length);
-
-      console.log(allSentences[0].getHtml());
-
-      const words = [];
-      const wordsObjects = [];
-      allSentences.forEach((sentence) => {
-        const words = sentence.split([" "], true /* trimDelimiters*/, true /* trimSpaces */);
-        words.load("text");
-        wordsObjects.push(words);
+      matchingStrings.forEach(item => {
+        item.load("text");
+        item.font.color = 'purple';
+        item.font.highlightColor = 'pink';
+        item.font.bold = true;
       });
       await context.sync();
-
-      // console.log(wordsObjects);
-      // console.log(wordsObjects.length);
-
-      wordsObjects.forEach((wordObject) => {
-        wordObject.items.forEach((word) => {
-          word.load("text");
-          if(word.text == "dfbdf")
-          {
-            word.font.color = "yellow";
-          }
-          words.push(word);
-        });
-      });
-
-      await context.sync();
-      console.log(words);
-      console.log(words.length);
-
-      words.forEach((word) => {
-        if(word.text == "dfbdf")
-        {
-          word.font.bold = true;
-        }
-      });
-
-
-      console.log(words[0].text);
-      console.log(words[0].getHtml());
-      console.log(words[0].getOoxml());
-
-      var html = words[0].getHtml();
-
-        // Synchronize the document state by executing the queued commands,
-        // and return a promise to indicate task completion.
-        context.sync().then(function () {
-            console.log('Paragraph HTML: ' + html.value);
-        });
-
-      words[0].insertHtml(`<HTML>
-      <HEAD></HEAD>
-      <BODY>
-      <div class="OutlineGroup"><div class="OutlineElement Ltr"><div class="ParaWrappingDiv"><p class="Paragraph" xml:lang="EN-US" lang="EN-US" paraid="0" paraeid="{33b92d5c-2cb1-4b2e-9e40-76823e625498}{240}" style="font-weight: normal; font-style: normal; vertical-align: baseline; font-family: &quot;Segoe UI&quot;, Tahoma, Verdana, Sans-Serif; background-color: transparent; color: windowtext; text-align: left; margin: 0px 0px 10.6667px; padding-left: 0px; padding-right: 0px; text-indent: 0px; font-size: 6pt;"><span data-contrast="none" class="TextRun" xml:lang="EN-US" lang="EN-US" style="color: rgb(255, 0, 0); background-color: transparent; font-size: 11pt; font-family: Calibri, Calibri_MSFontService, sans-serif; font-kerning: none; line-height: 19.425px;"><span class="NormalTextRun" style="background-color: blue;">idsdsdsdto</span></span><span class="EOP" style="font-size: 11pt; line-height: 19.425px; font-family: Calibri, Calibri_MSFontService, sans-serif;">&nbsp;</span></p></div></div></div><span class="WACImageGroupContainer"></span><span data-contrast="none" class="TextRun" xml:lang="EN-US" lang="EN-US" style="color: rgb(255, 0, 0); background-color: transparent; font-size: 11pt; font-family: Calibri, Calibri_MSFontService, sans-serif; font-kerning: none; line-height: 19.425px;"></span><span class="NormalTextRun" style="background-color: inherit;"></span>
-      </BODY>
-      </HTML>`, Word.InsertLocation.replace);
+      
+      const complexityValue = responseJson.complexity.coef;
+      const complexityDescription = responseJson.complexity.text;
+      console.log(complexityValue);
+      console.log(complexityDescription);
+      
 
       this.setState({
         bulpitWords: [
