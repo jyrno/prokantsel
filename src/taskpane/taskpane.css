@@ -171,7 +171,8 @@ b {
 }
 
 .bulpit--hidden .bulpit__message,
-.bulpit--hidden .bulpit__examples {
+.bulpit--hidden .bulpit__examples,
+.bulpit--hidden .bulpit__replace {
   opacity: 0;
   transition-delay: 0s;
 }
@@ -225,4 +226,23 @@ b {
   border-top: 1px solid #eee;
   background: #fafafa;
   padding: 10px 15px;
+}
+
+.bulpit__replace {
+  margin-top: 8px;
+  opacity: 1;
+  transition: .1s ease-in-out opacity;
+  transition-delay: .2s;
+}
+
+.bulpit__synonym {
+  margin: 4px 8px 4px 0;
+  padding: 4px 8px 6px 8px;
+  background-color: #eee;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.bulpit__synonym:hover {
+  background-color: #ddd;
 }

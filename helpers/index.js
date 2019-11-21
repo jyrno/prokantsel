@@ -11,7 +11,7 @@ export const descriptions = {
         example_wrong: "Menetlusteenistus on antud piirkonnas juba teostanud pistelist kontrollimist ja kindlasti teostab edaspidi kontrolli märgitud piirkonnas",
         example_correct: "Menetlusteenistus on nimetatud piirkonda juba pisteliselt kontrollinud ja teeb seda kindlasti ka edaspidi",
       },
-      aset_leidma: {
+      'aset leidma': {
         description: "Väljendverbi aset leidma kasutatakse kantseliidis tavaliselt tähenduses ‘toimuma, olema, juhtuma, ette tulema, esinema’. Tihti saab selle lihtsalt ära jätta, otsida lausest üles tegeliku tegevuse ja väljendada seda verbiga.",
         example_wrong: "Euroopa rahvastikus domineerib negatiivne iive ja elanike vanus­ struktuuris leiab aset vanurite osakaalu kiire tõus",
         example_correct: "Euroopa rahvastiku iive on negatiivne ja vanurite osakaal kasvab kiiresti",
@@ -32,5 +32,20 @@ export const descriptions = {
         example_correct: "Tartu linnaruumi teisenemise tõttu tuleb muuta ~ parandada linna transpordituiksoonte asukohta ja läbilaskevõimet ~ tuleb üle vaadata linna transpordituiksoonte asukoht ja läbilaskevõime",
       }
     }
-  }
+  },
+  SAAV_KAANE: {
+    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
+    example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
+  },
+  PARONUUM: {
+    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
+    example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
+  },
+  KANTSELIIT: {
+    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
+    example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
+  },
 };

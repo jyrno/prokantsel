@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { descriptions } from "../../../helpers/index.js";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 export default class BulpitWordItem extends Component {
   constructor(props, context) {
@@ -8,18 +9,38 @@ export default class BulpitWordItem extends Component {
       isOpen: false,
     };
     this.handleItemClick = this.handleItemClick.bind(this);
+    this.handleIgnore = this.handleIgnore.bind(this);
+    this.handleReplace = this.handleReplace.bind(this);
   }
 
   handleItemClick = () => {
-    console.log('click');
     this.setState(state => ({
       isOpen: !state.isOpen
     }));
-    console.log(this.bulpitWordItem.scrollHeight);
+    console.log(this.props.searchObjects);
+    const object = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+    console.log('object:');
+    console.log(object);
+  }
+
+  handleIgnore = async () => {
+    console.log('in handleIgnore');
+    const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+    await this.props.onIgnore(phraseObject);
+  }
+
+  handleReplace = async (synonym) => {
+    console.log('in handleReplace');
+    console.log(synonym);
+    const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+    await this.props.onReplace(phraseObject, synonym);
   }
 
   render() {
-    const { word, type, verb } = this.props;
+    const { word, type, verb, synonyms } = this.props;
+    console.log(descriptions[type]);
+    console.log(descriptions);
+    console.log(synonyms);
 
     return (
       <div
@@ -35,7 +56,7 @@ export default class BulpitWordItem extends Component {
             </p>
           </div>
           <div className="bulpit__container">
-            <div className="bulpit__ignore">
+            <div className="bulpit__ignore" onClick={this.handleIgnore}>
               <span>Ignoreeri</span>
             </div>
             <div className="bulpit__arrow-wrapper" onClick={this.handleItemClick}>
@@ -50,6 +71,11 @@ export default class BulpitWordItem extends Component {
             descriptions[type].description
           )}
         </p>
+        <div className="bulpit__replace">
+          {synonyms && synonyms.map((synonym, idx) => (
+            <span className="bulpit__synonym" key={idx} onClick={() => this.handleReplace(synonym)}>{synonym}</span>
+          ))}
+        </div>
         <div className="bulpit__examples">
           <span className="bulpit__example-title">
             Näide:

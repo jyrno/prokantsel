@@ -63,7 +63,7 @@ export default class App extends React.Component {
       await context.sync();
       console.log("Update");
 
-      const response = await fetch("https://172.31.99.247:5000/check", {
+      const response = await fetch("https://demo2624123.mockable.io/", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -82,8 +82,8 @@ export default class App extends React.Component {
 
       // const response2 = await fetch("https://172.31.99.247:5000/")
 
-      responseJson.analysis[2] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
-      responseJson.analysis[3] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
+      // responseJson.analysis[2] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
+      // responseJson.analysis[3] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
 
       console.log(responseJson);
       this.parseResponse(responseJson);
@@ -123,7 +123,7 @@ export default class App extends React.Component {
 
       matchingStrings.forEach(item => {
         item.load("text");
-        item.font.color = 'purple';
+        // item.font.color = 'purple';
         item.font.highlightColor = 'pink';
         //item.font.bold = true;
       });
@@ -141,13 +141,42 @@ export default class App extends React.Component {
   };
 
   replaceSinglePhrase = (phraseObject, phraseToReplaceWith) => {
-    phraseObject.insertText(phraseToReplaceWith, Word.InsertLocation.replace);
+    return Word.run(async context => {
+      let documentBody = context.document.body;
+      documentBody.load("text");
+      let searchRes = documentBody.search(phraseObject.text);
+      searchRes.load("text");
+      await context.sync();
+      searchRes.items[0].insertText(phraseToReplaceWith, Word.InsertLocation.replace);
+      await context.sync();
+      this.setState(state => ({
+        bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text !== phraseObject.text),
+      }));
+    })
+    .catch(function (error) {
+      console.log('Error: ' + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+          console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
   };
 
   cleanSignlePhrase = async (phraseObject) => {
-    phraseObject.font.highlightColor = 'white';
-    phraseObject.font.color = 'black';
+    return Word.run(async context => {
+    let documentBody = context.document.body;
+    documentBody.load("text");
+    let searchRes = documentBody.search(phraseObject.text);
+    searchRes.load("text");
     await context.sync();
+    searchRes.items[0].font.highlightColor = 'white';
+    searchRes.items[0].font.color = 'black';
+    await context.sync();
+    this.setState(state => ({
+      bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text !== phraseObject.text),
+    }));
+  })
+  .catch(function (error) {
+    console.log('Error: ' + JSON.stringify(error));
+    if (error instanceof OfficeExtension.Error) {
+        console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
   };
 
   cleanDocument = async () => {
@@ -195,6 +224,7 @@ export default class App extends React.Component {
               word={bulpitObject.text}
               type={bulpitObject.type}
               verb={bulpitObject.verb}
+              synonyms={bulpitObject.synonyms}
               searchObjects={this.state.searchResults}
               onIgnore={this.cleanSignlePhrase}
               onReplace={this.replaceSinglePhrase}
