@@ -100,11 +100,26 @@ b {
 
 .bulpit__complexity {
   margin-top: 0;
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
 }
 
-/* .bulpit:hover {
-  background: #fcfcfc;
-} */
+.bulpit__complexity-img {
+  margin-right: 8px;
+}
+
+.bulpit__complexity-img--bad path {
+  fill: #b71540;
+}
+
+.bulpit__complexity-img--ok path {
+  fill: #f6b93b;
+}
+
+.bulpit__complexity-img--good path {
+  fill: #6ab04c;
+}
 
 .bulpit--hidden {
   overflow: hidden;
@@ -140,6 +155,7 @@ b {
 
 .bulpit__ignore {
   cursor: pointer;
+  font-size: 14px;
 }
 
 .bulpit__ignore:hover {
@@ -202,18 +218,39 @@ b {
   width: 6px;
   margin: 0 12px 0 2px;
   border-radius: 50%;
+  background-color: #82CCDD;
+}
+
+.bulpit__indicator--PARONUUM {
+  background-color: #ffcfe7;
 }
 
 .bulpit__indicator--NOMINALISATSIOON {
-  background-color: #e66767;
+  background-color: #efcfff;
 }
 
-/* .bulpit__indicator--POOLT_TARIND {
-  background-color: #3dc1d3;
-} */
-
 .bulpit__indicator--POOLT_TARIND {
-  background-color: #f5cd79;
+  background-color: #c5d2fc;
+}
+
+.bulpit__indicator--OLEMA_KESKSONA {
+  background-color: #d0f5ef;
+}
+
+.bulpit__indicator--KANTSELIIT {
+  background-color: #d3f5d4;
+}
+
+.bulpit__indicator--LIIGNE_MITMUS {
+  background-color: #feffcc;
+}
+
+.bulpit__indicator--SAAV_KAANE {
+  background-color: #fcebca;
+}
+
+.bulpit__indicator--LT_MAARSONA {
+  background-color: #f5d5d5;
 }
 
 .bulpit__button {
@@ -229,10 +266,16 @@ b {
 }
 
 .bulpit__replace {
-  margin-top: 8px;
+  margin: 10px 0 12px 0;
   opacity: 1;
   transition: .1s ease-in-out opacity;
   transition-delay: .2s;
+}
+
+.bulpit__replace-title {
+  margin-right: 6px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .bulpit__synonym {
@@ -244,5 +287,5 @@ b {
 }
 
 .bulpit__synonym:hover {
-  background-color: #ddd;
+  background-color: #eaeaea;
 }

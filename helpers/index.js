@@ -34,17 +34,17 @@ export const descriptions = {
     }
   },
   SAAV_KAANE: {
-    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    description: "Saav kääne on halb",
     example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
     example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
   },
   PARONUUM: {
-    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    description: "Paronüüm on halb",
     example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
     example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
   },
   KANTSELIIT: {
-    description: "Kaalu, kas sõna \"poolt\" on vajalik",
+    description: "Kantseliit on halb",
     example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
     example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
   },

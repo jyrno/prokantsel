@@ -17,10 +17,7 @@ export default class BulpitWordItem extends Component {
     this.setState(state => ({
       isOpen: !state.isOpen
     }));
-    console.log(this.props.searchObjects);
     const object = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
-    console.log('object:');
-    console.log(object);
   }
 
   handleIgnore = async () => {
@@ -38,15 +35,14 @@ export default class BulpitWordItem extends Component {
 
   render() {
     const { word, type, verb, synonyms } = this.props;
-    console.log(descriptions[type]);
-    console.log(descriptions);
-    console.log(synonyms);
 
     return (
       <div
         className={"bulpit bulpit--" + (this.state.isOpen ? 'open' : 'hidden')}
         ref={(c) => { this.bulpitWordItem = c; }}
-        style={{ maxHeight: this.state.isOpen ? this.bulpitWordItem.scrollHeight : 20 }}
+        style={{
+          maxHeight: this.state.isOpen ? this.bulpitWordItem.scrollHeight : 20
+        }}
       >
         <div className="bulpit__word-wrapper">
           <div className="bulpit__container">
@@ -72,6 +68,7 @@ export default class BulpitWordItem extends Component {
           )}
         </p>
         <div className="bulpit__replace">
+          {synonyms && <span className="bulpit__replace-title">Asenda:</span>}
           {synonyms && synonyms.map((synonym, idx) => (
             <span className="bulpit__synonym" key={idx} onClick={() => this.handleReplace(synonym)}>{synonym}</span>
           ))}
