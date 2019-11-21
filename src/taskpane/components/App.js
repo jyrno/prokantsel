@@ -89,6 +89,10 @@ export default class App extends React.Component {
       wordsObjects.forEach((wordObject) => {
         wordObject.items.forEach((word) => {
           word.load("text");
+          if(word.text == "dfbdf")
+          {
+            word.font.color = "yellow";
+          }
           words.push(word);
         });
       });
@@ -97,6 +101,32 @@ export default class App extends React.Component {
       console.log(words);
       console.log(words.length);
 
+      words.forEach((word) => {
+        if(word.text == "dfbdf")
+        {
+          word.font.bold = true;
+        }
+      });
+
+
+      console.log(words[0].text);
+      console.log(words[0].getHtml());
+      console.log(words[0].getOoxml());
+
+      var html = words[0].getHtml();
+
+        // Synchronize the document state by executing the queued commands,
+        // and return a promise to indicate task completion.
+        context.sync().then(function () {
+            console.log('Paragraph HTML: ' + html.value);
+        });
+
+      words[0].insertHtml(`<HTML>
+      <HEAD></HEAD>
+      <BODY>
+      <div class="OutlineGroup"><div class="OutlineElement Ltr"><div class="ParaWrappingDiv"><p class="Paragraph" xml:lang="EN-US" lang="EN-US" paraid="0" paraeid="{33b92d5c-2cb1-4b2e-9e40-76823e625498}{240}" style="font-weight: normal; font-style: normal; vertical-align: baseline; font-family: &quot;Segoe UI&quot;, Tahoma, Verdana, Sans-Serif; background-color: transparent; color: windowtext; text-align: left; margin: 0px 0px 10.6667px; padding-left: 0px; padding-right: 0px; text-indent: 0px; font-size: 6pt;"><span data-contrast="none" class="TextRun" xml:lang="EN-US" lang="EN-US" style="color: rgb(255, 0, 0); background-color: transparent; font-size: 11pt; font-family: Calibri, Calibri_MSFontService, sans-serif; font-kerning: none; line-height: 19.425px;"><span class="NormalTextRun" style="background-color: blue;">idsdsdsdto</span></span><span class="EOP" style="font-size: 11pt; line-height: 19.425px; font-family: Calibri, Calibri_MSFontService, sans-serif;">&nbsp;</span></p></div></div></div><span class="WACImageGroupContainer"></span><span data-contrast="none" class="TextRun" xml:lang="EN-US" lang="EN-US" style="color: rgb(255, 0, 0); background-color: transparent; font-size: 11pt; font-family: Calibri, Calibri_MSFontService, sans-serif; font-kerning: none; line-height: 19.425px;"></span><span class="NormalTextRun" style="background-color: inherit;"></span>
+      </BODY>
+      </HTML>`, Word.InsertLocation.replace);
 
       this.setState({
         bulpitWords: [
@@ -123,7 +153,11 @@ export default class App extends React.Component {
         ],
       });
       
-    });
+    })
+    .catch(function (error) {
+      console.log('Error: ' + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+          console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
   };
 
   render() {
