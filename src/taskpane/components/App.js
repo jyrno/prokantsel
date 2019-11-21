@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, ButtonType } from "office-ui-fabric-react";
+import { Button, ButtonType, MarqueeSelection } from "office-ui-fabric-react";
 import BulpitWordItem from "./BulpitWordItem";
 import { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
+import { isObject } from "util";
 /* global Button Header, HeroList, HeroListItem, Progress, Word */
 
 export default class App extends React.Component {
@@ -11,11 +12,14 @@ export default class App extends React.Component {
     this.state = {
       listItems: [],
       bulpitWords: [],
+      searchResults: [],
     };
     this.parseResponse = this.parseResponse.bind(this);
   }
 
   componentDidMount() {
+    console.log("OLEN Mountis");
+
     this.highlight();
     this.setState({
       listItems: [
@@ -35,6 +39,11 @@ export default class App extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    console.log("OLEN UNMOUNTIS");
+    this.cleanDocument();
+}
+
   parseResponse = (responseJson) => {
     this.setState({
       bulpitWords: responseJson.analysis,
@@ -44,6 +53,7 @@ export default class App extends React.Component {
 
   highlight = async () => {
     return Word.run(async context => {
+      this.cleanDocument();
       let documentBody = context.document.body;
       documentBody.load("text");
       await context.sync();
@@ -51,6 +61,7 @@ export default class App extends React.Component {
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
       await context.sync();
+      console.log("Update");
 
       const response = await fetch("https://demo2624123.mockable.io/", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -63,20 +74,32 @@ export default class App extends React.Component {
           },
           redirect: 'follow', // manual, *follow, error
           referrer: 'no-referrer', // no-referrer, *client
-          body: JSON.stringify(documentBody.text)
+          body: {"text": documentBody.text}
       });
-
+      console.log("Update");
       const responseJson = await response.json();
+
+      // const response2 = await fetch("https://172.31.99.247:5000/")
+
+      responseJson.analysis[2] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
+      responseJson.analysis[3] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
+
+      console.log(responseJson);
       this.parseResponse(responseJson);
       const matchingStrings = [];
       const searchResultObjects = [];
+      const searchedVerbs = [];
 
       responseJson.analysis.forEach(async analysis => {
-        console.log("Searching for word: " + analysis.text);
-        const searchResult = documentBody.search(analysis.text);
-        searchResult.load("text");
-        searchResultObjects.push(searchResult);
-        console.log(searchResult);
+        if(searchedVerbs.indexOf(analysis.text) == -1)
+        {
+          console.log("Searching for word: " + analysis.text);
+          const searchResult = documentBody.search(analysis.text);
+          searchedVerbs.push(analysis.text);
+          searchResult.load("text");
+          searchResultObjects.push(searchResult);
+          console.log(searchResult);
+        }
       });
       await context.sync();
       console.log(searchResultObjects);
@@ -85,16 +108,23 @@ export default class App extends React.Component {
         object.items.forEach(resultItem => {
           resultItem.load("text");
           matchingStrings.push(resultItem);
+          
         });
       });
       await context.sync();
+      console.log("Not state list");
       console.log(matchingStrings);
+      this.setState(state => ({
+        searchResults: matchingStrings,
+      }));
+      // console.log("State list");
+      // console.log(searchResults);
 
       matchingStrings.forEach(item => {
         item.load("text");
         item.font.color = 'purple';
         item.font.highlightColor = 'pink';
-        item.font.bold = true;
+        //item.font.bold = true;
       });
       await context.sync();
 
@@ -107,8 +137,31 @@ export default class App extends React.Component {
       console.log('Error: ' + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
           console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
+  };
 
+  replaceSinglePhrase = (phraseObject, phraseToReplaceWith) => {
+    phraseObject.insertText(phraseToReplaceWith, Word.InsertLocation.replace);
+  };
 
+  cleanSignlePhrase = async (phraseObject) => {
+    phraseObject.font.highlightColor = 'white';
+    phraseObject.font.color = 'black';
+    await context.sync();
+  };
+
+  cleanDocument = async () => {
+    return Word.run(async context => {
+      let documentBody = context.document.body;
+      documentBody.load("text");
+      documentBody.font.highlightColor = 'white';
+      documentBody.font.color = 'black';
+      await context.sync();
+
+    })
+    .catch(function (error) {
+      console.log('Error: ' + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+          console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
   };
 
   render() {
@@ -139,6 +192,9 @@ export default class App extends React.Component {
               word={bulpitObject.text}
               type={bulpitObject.type}
               verb={bulpitObject.verb}
+              searchObjects={this.state.searchResults}
+              onIgnore={this.cleanSignlePhrase}
+              onReplace={this.replaceSinglePhrase}
             />
           ))}
         </main>
