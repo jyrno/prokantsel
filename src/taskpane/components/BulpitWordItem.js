@@ -24,15 +24,24 @@ export default class BulpitWordItem extends Component {
     return (
       <div
         className={"bulpit bulpit--" + (this.state.isOpen ? 'open' : 'hidden')}
-        onClick={this.handleItemClick}
         ref={(c) => { this.bulpitWordItem = c; }}
         style={{ maxHeight: this.state.isOpen ? this.bulpitWordItem.scrollHeight : 20 }}
       >
         <div className="bulpit__word-wrapper">
-          <span className={"bulpit__indicator bulpit__indicator--" + type}></span>
-          <p className="bulpit__word">
-            {word}
-          </p>
+          <div className="bulpit__container">
+            <span className={"bulpit__indicator bulpit__indicator--" + type}></span>
+            <p className="bulpit__word">
+              {word}
+            </p>
+          </div>
+          <div className="bulpit__container">
+            <div className="bulpit__ignore">
+              <span>Ignoreeri</span>
+            </div>
+            <div className="bulpit__arrow-wrapper" onClick={this.handleItemClick}>
+              <i className="bulpit__arrow"></i>
+            </div>
+          </div>
         </div>
         <p className="bulpit__message">
           {type === 'NOMINALISATSIOON' ? (

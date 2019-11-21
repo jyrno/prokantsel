@@ -1,6 +1,6 @@
 export const descriptions = {
   POOLT_TARIND: {
-    description: "Kui poolt-tarind laiendab täiendina esinevat tud-kesksõna, saab teda enamasti asendada omastavas käändes tegijafraasiga.",
+    description: "Kaalu, kas sõna \"poolt\" on vajalik",
     example_wrong: "Raamatukogu poolt korraldati Kurtna lasteaialastele jututunde ning raamatute näitusi",
     example_correct: "Raamatukogu korraldas Kurtna laste­aia lastele jututunde ja raamatu­näitusi",
   },

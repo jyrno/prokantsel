@@ -76,7 +76,11 @@
 }
 
 b {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+.cui-taskPaneTitle {
+  font-size: 16px;
 }
 
 .taskpane {
@@ -90,17 +94,65 @@ b {
   margin-bottom: 8px;
   box-shadow: 0px 1px 5px 0px rgba(0,0,0,.2);
   border-radius: 4px;
-  cursor: pointer;
+  position: relative;
   transition: .2s ease-in max-height;
 }
 
-.bulpit:hover {
+.bulpit__complexity {
+  margin-top: 0;
+}
+
+/* .bulpit:hover {
   background: #fcfcfc;
+} */
+
+.bulpit--hidden {
+  overflow: hidden;
+}
+
+.bulpit__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bulpit__arrow-wrapper {
+  margin-left: 8px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bulpit__arrow-wrapper:hover .bulpit__arrow {
+  border-color: #999;
+}
+
+.bulpit__arrow {
+  border: solid #aaa;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transition: .2s ease-in transform;
+  transform: rotate(-135deg);
+}
+
+.bulpit__ignore {
+  cursor: pointer;
+}
+
+.bulpit__ignore:hover {
+  color: #333;
+}
+
+.bulpit--hidden .bulpit__arrow {
+  transform: rotate(45deg);
 }
 
 .bulpit__word-wrapper {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .bulpit__word {

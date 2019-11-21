@@ -63,18 +63,19 @@ export default class App extends React.Component {
       await context.sync();
       console.log("Update");
 
-      const response = await fetch("https://demo2624123.mockable.io/", {
+      const response = await fetch("https://172.31.99.247:5000/check", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin', // include, *same-origin, omit
+          // 'Content-Type': 'application/json',
           headers: {
             'Content-Type': 'application/json'
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           redirect: 'follow', // manual, *follow, error
           referrer: 'no-referrer', // no-referrer, *client
-          body: {"text": documentBody.text}
+          body: JSON.stringify({"text": documentBody.text})
       });
       console.log("Update");
       const responseJson = await response.json();
@@ -108,7 +109,7 @@ export default class App extends React.Component {
         object.items.forEach(resultItem => {
           resultItem.load("text");
           matchingStrings.push(resultItem);
-          
+
         });
       });
       await context.sync();
@@ -184,9 +185,11 @@ export default class App extends React.Component {
             Leia kantseliidid
           </Button>
           {this.state.complexity && (
-            <p><b>Analüüsi tulemus: </b>{this.state.complexity.text}</p>
+            <p className="bulpit__complexity">
+              <b>Analüüsi tulemus: </b>{this.state.complexity.text}
+            </p>
           )}
-          {this.state.bulpitWords.map((bulpitObject, idx) => (
+          {this.state.bulpitWords && this.state.bulpitWords.map((bulpitObject, idx) => (
             <BulpitWordItem
               key={idx}
               word={bulpitObject.text}
