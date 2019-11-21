@@ -18,8 +18,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("OLEN Mountis");
-
     this.highlight();
     this.setState({
       listItems: [
@@ -37,11 +35,11 @@ export default class App extends React.Component {
         }
       ]
     });
+    this.cleanDocument();
   }
 
-  componentWillUnmount() {
-    console.log("OLEN UNMOUNTIS");
-    this.cleanDocument();
+  async componentWillUnmount() {
+    await this.cleanDocument();
 }
 
   parseResponse = (responseJson) => {
@@ -80,11 +78,6 @@ export default class App extends React.Component {
       console.log("Update");
       const responseJson = await response.json();
 
-      // const response2 = await fetch("https://172.31.99.247:5000/")
-
-      // responseJson.analysis[2] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
-      // responseJson.analysis[3] = {"text": "politseiniku poolt", "type": "POOLT_TARIND"};
-
       console.log(responseJson);
       this.parseResponse(responseJson);
       const matchingStrings = [];
@@ -118,14 +111,11 @@ export default class App extends React.Component {
       this.setState(state => ({
         searchResults: matchingStrings,
       }));
-      // console.log("State list");
-      // console.log(searchResults);
 
       matchingStrings.forEach(item => {
         item.load("text");
         // item.font.color = 'purple';
-        item.font.highlightColor = 'pink';
-        //item.font.bold = true;
+        item.font.highlightColor = '#82CCDD';
       });
       await context.sync();
 
@@ -184,7 +174,7 @@ export default class App extends React.Component {
       let documentBody = context.document.body;
       documentBody.load("text");
       documentBody.font.highlightColor = 'white';
-      documentBody.font.color = 'black';
+      // documentBody.font.color = 'black';
       await context.sync();
 
     })
@@ -201,6 +191,7 @@ export default class App extends React.Component {
       return (
         <Progress title={title} logo="assets/logo-filled.png" message="Please sideload your addin to see app body." />
       );
+      
     }
 
     return (
@@ -211,7 +202,7 @@ export default class App extends React.Component {
             buttonType={ButtonType.hero}
             onClick={this.highlight}
           >
-            Leia kantseliidid
+            Analüüsi!
           </Button>
           {this.state.complexity && (
             <p className="bulpit__complexity">
