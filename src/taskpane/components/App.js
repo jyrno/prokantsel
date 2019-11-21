@@ -58,8 +58,8 @@ export default class App extends React.Component {
       console.log(allParagraphs);
       console.log(allParagraphs.length);
 
-      console.log(allSentencesObjects);
-      console.log(allSentencesObjects.length);
+      // console.log(allSentencesObjects);
+      // console.log(allSentencesObjects.length);
 
       allSentencesObjects.forEach((sentencesObject) => {
         sentencesObject.items.forEach((sentence) => {
@@ -71,6 +71,32 @@ export default class App extends React.Component {
 
       console.log(allSentences);
       console.log(allSentences.length);
+
+      console.log(allSentences[0].getHtml());
+
+      const words = [];
+      const wordsObjects = [];
+      allSentences.forEach((sentence) => {
+        const words = sentence.split([" "], true /* trimDelimiters*/, true /* trimSpaces */);
+        words.load("text");
+        wordsObjects.push(words);
+      });
+      await context.sync();
+
+      // console.log(wordsObjects);
+      // console.log(wordsObjects.length);
+
+      wordsObjects.forEach((wordObject) => {
+        wordObject.items.forEach((word) => {
+          word.load("text");
+          words.push(word);
+        });
+      });
+
+      await context.sync();
+      console.log(words);
+      console.log(words.length);
+
 
       this.setState({
         bulpitWords: [
