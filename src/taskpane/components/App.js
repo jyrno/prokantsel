@@ -179,11 +179,6 @@ export default class App extends React.Component {
           >
             Leia kantseliidid
           </Button>
-          {this.state.bulpitWords.length > 0 && (
-            <p className="ms-font-l">
-              Kantseliitsed sõnad:
-            </p>
-          )}
           {this.state.bulpitWords.map((bulpitObject, idx) => (
             <BulpitWordItem
               key={idx}
