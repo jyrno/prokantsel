@@ -36,6 +36,20 @@ export default class App extends React.Component {
 
   highlight = async () => {
     return Word.run(async context => {
+      const response = await fetch("https://demo2624123.mockable.io/", {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // no-referrer, *client
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
 
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
@@ -51,7 +65,7 @@ export default class App extends React.Component {
         const sentences = paragraph.split(["."], false /* trimDelimiters*/, true /* trimSpaces */);
         sentences.load("text");
         allSentencesObjects.push(sentences);
-        
+
       });
       await context.sync();
 
@@ -152,12 +166,14 @@ export default class App extends React.Component {
           }
         ],
       });
-      
+
     })
     .catch(function (error) {
       console.log('Error: ' + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
           console.log('Debug info: ' + JSON.stringify(error.debugInfo))}});
+
+
   };
 
   render() {
