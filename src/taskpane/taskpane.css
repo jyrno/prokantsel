@@ -90,12 +90,12 @@ b {
 .bulpit {
   z-index: 1;
   width: 100%;
-  padding: 8px 12px;
+  padding-left: 12px;
   margin-bottom: 8px;
   box-shadow: 0px 1px 5px 0px rgba(0,0,0,.2);
   border-radius: 4px;
   position: relative;
-  transition: .2s ease-in max-height;
+  transition: .2s ease-in max-height, margin, box-shadow;
 }
 
 .bulpit__complexity {
@@ -121,6 +121,7 @@ b {
   fill: #6ab04c;
 }
 
+.bulpit--closed,
 .bulpit--hidden {
   overflow: hidden;
 }
@@ -131,9 +132,13 @@ b {
   align-items: center;
 }
 
+.bulpit__container:first-child {
+  padding: 8px 0;
+}
+
 .bulpit__arrow-wrapper {
-  margin-left: 8px;
-  width: 30px;
+  width: 40px;
+  height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,8 +154,9 @@ b {
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
-  transition: .2s ease-in transform;
-  transform: rotate(-135deg);
+  transition: .2s ease-in transform, margin;
+  transform: rotate(45deg);
+  margin-bottom: 0;
 }
 
 .bulpit__ignore {
@@ -162,8 +168,9 @@ b {
   color: #333;
 }
 
-.bulpit--hidden .bulpit__arrow {
-  transform: rotate(45deg);
+.bulpit--open .bulpit__arrow {
+  transform: rotate(-135deg);
+  margin-bottom: -6px;
 }
 
 .bulpit__word-wrapper {
@@ -186,11 +193,18 @@ b {
   transition-delay: .2s;
 }
 
+.bulpit--closed .bulpit__message,
+.bulpit--closed .bulpit__examples,
+.bulpit--closed .bulpit__replace,
 .bulpit--hidden .bulpit__message,
 .bulpit--hidden .bulpit__examples,
 .bulpit--hidden .bulpit__replace {
   opacity: 0;
   transition-delay: 0s;
+}
+
+.bulpit__examples {
+  margin: 0 12px 12px 0;
 }
 
 .bulpit__example-title {

@@ -7,6 +7,7 @@ export default class BulpitWordItem extends Component {
     super(props, context);
     this.state = {
       isOpen: false,
+      isHidden: false,
     };
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleIgnore = this.handleIgnore.bind(this);
@@ -20,17 +21,29 @@ export default class BulpitWordItem extends Component {
     const object = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
   }
 
-  handleIgnore = async () => {
+  handleIgnore = () => {
     console.log('in handleIgnore');
-    const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
-    await this.props.onIgnore(phraseObject);
+    this.setState({
+      isHidden: true,
+      isOpen: false,
+    });
+    setTimeout(() => {
+      const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+      this.props.onIgnore(phraseObject);
+    }, 500);
   }
 
-  handleReplace = async (synonym) => {
+  handleReplace = (synonym) => {
     console.log('in handleReplace');
     console.log(synonym);
-    const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
-    await this.props.onReplace(phraseObject, synonym);
+    this.setState({
+      isHidden: true,
+      isOpen: false,
+    });
+    setTimeout(() => {
+      const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+      this.props.onReplace(phraseObject, synonym);
+    }, 500);
   }
 
   render() {
@@ -38,10 +51,13 @@ export default class BulpitWordItem extends Component {
 
     return (
       <div
-        className={"bulpit bulpit--" + (this.state.isOpen ? 'open' : 'hidden')}
+        className={"bulpit bulpit--" + (this.state.isOpen ? 'open' : this.state.isHidden ? 'hidden' : 'closed')}
         ref={(c) => { this.bulpitWordItem = c; }}
         style={{
-          maxHeight: this.state.isOpen ? this.bulpitWordItem.scrollHeight : 20
+          maxHeight: this.state.isHidden ? 0 : this.state.isOpen ? this.bulpitWordItem.scrollHeight : 36,
+          marginBottom: this.state.isHidden ? 0 : 8,
+          boxShadow: this.state.isHidden ? '0px 1px 5px 0px rgba(0,0,0,0)' : '0px 1px 5px 0px rgba(0,0,0,.2)',
+          transitionDuration: this.state.isHidden ? '.4s' : '.2s',
         }}
       >
         <div className="bulpit__word-wrapper">
