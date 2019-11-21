@@ -109,7 +109,8 @@ b {
   color: #333;
 }
 
-.bulpit__message {
+.bulpit__message,
+.bulpit__examples {
   margin: 8px 0 0 0;
   opacity: 1;
   line-height: 20px;
@@ -117,9 +118,29 @@ b {
   transition-delay: .2s;
 }
 
-.bulpit--hidden .bulpit__message {
+.bulpit--hidden .bulpit__message,
+.bulpit--hidden .bulpit__examples {
   opacity: 0;
   transition-delay: 0s;
+}
+
+.bulpit__example-title {
+  text-decoration: underline;
+}
+
+.bulpit__example--wrong,
+.bulpit__example--correct {
+  margin: 0;
+}
+
+.bulpit__example--wrong {
+  margin-bottom: 4px;
+  color: #e66767;
+}
+
+.bulpit__example--correct {
+  margin-bottom: 4px;
+  color: #27ae60;
 }
 
 .bulpit__indicator {
@@ -130,15 +151,15 @@ b {
   border-radius: 50%;
 }
 
-.bulpit__indicator--kantseliit {
+.bulpit__indicator--NOMINALISATSIOON {
   background-color: #e66767;
 }
 
-.bulpit__indicator--paronyym {
+/* .bulpit__indicator--POOLT_TARIND {
   background-color: #3dc1d3;
-}
+} */
 
-.bulpit__indicator--tarind {
+.bulpit__indicator--POOLT_TARIND {
   background-color: #f5cd79;
 }
 

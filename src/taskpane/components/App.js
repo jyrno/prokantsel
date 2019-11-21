@@ -12,6 +12,7 @@ export default class App extends React.Component {
       listItems: [],
       bulpitWords: [],
     };
+    this.parseResponse = this.parseResponse.bind(this);
   }
 
   componentDidMount() {
@@ -34,9 +35,15 @@ export default class App extends React.Component {
     });
   }
 
+  parseResponse = (responseJson) => {
+    this.setState({
+      bulpitWords: responseJson.analysis,
+      complexity: responseJson.complexity,
+    });
+  };
+
   highlight = async () => {
     return Word.run(async context => {
-
       let documentBody = context.document.body;
       documentBody.load("text");
       await context.sync();
@@ -56,10 +63,11 @@ export default class App extends React.Component {
           },
           redirect: 'follow', // manual, *follow, error
           referrer: 'no-referrer', // no-referrer, *client
-          body: JSON.stringify(documentBody.text) 
+          body: JSON.stringify(documentBody.text)
       });
 
       const responseJson = await response.json();
+      this.parseResponse(responseJson);
       const matchingStrings = [];
       const searchResultObjects = [];
 
@@ -70,7 +78,7 @@ export default class App extends React.Component {
         searchResultObjects.push(searchResult);
         console.log(searchResult);
       });
-      await context.sync();  
+      await context.sync();
       console.log(searchResultObjects);
 
       searchResultObjects.forEach(object => {
@@ -89,38 +97,11 @@ export default class App extends React.Component {
         item.font.bold = true;
       });
       await context.sync();
-      
+
       const complexityValue = responseJson.complexity.coef;
       const complexityDescription = responseJson.complexity.text;
       console.log(complexityValue);
       console.log(complexityDescription);
-      
-
-      this.setState({
-        bulpitWords: [
-          {
-            word: "Hello",
-            description: "Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini Tee paremini ",
-            type: "kantseliit",
-          },
-          {
-            word: "Word",
-            description: "Veel paremini",
-            type: "paronyym",
-          },
-          {
-            word: "Test",
-            description: "Miks mitte veel paremini",
-            type: "tarind",
-          },
-          {
-            word: "Word",
-            description: "Veel paremini",
-            type: "paronyym",
-          }
-        ],
-      });
-
     })
     .catch(function (error) {
       console.log('Error: ' + JSON.stringify(error));
@@ -149,12 +130,15 @@ export default class App extends React.Component {
           >
             Leia kantseliidid
           </Button>
+          {this.state.complexity && (
+            <p><b>Analüüsi tulemus: </b>{this.state.complexity.text}</p>
+          )}
           {this.state.bulpitWords.map((bulpitObject, idx) => (
             <BulpitWordItem
               key={idx}
-              word={bulpitObject.word}
-              description={bulpitObject.description}
+              word={bulpitObject.text}
               type={bulpitObject.type}
+              verb={bulpitObject.verb}
             />
           ))}
         </main>
