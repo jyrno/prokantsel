@@ -4,7 +4,7 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Prööbik"/>
+  <DisplayName DefaultValue="Ööbik"/>
   <Description DefaultValue="A template to get started."/>
   <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-80.png"/>
@@ -74,11 +74,11 @@
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Hävita kantseliit!"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Add-ins"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Prööbik"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Ööbik"/>
       </bt:ShortStrings>
       <bt:LongStrings>
       <bt:String id="GetStarted.Description" DefaultValue="Vajuta siia, et analüüsida teksti!"/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show Prööbik"/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show Ööbik"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

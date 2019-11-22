@@ -58,7 +58,7 @@ export default class BulpitWordItem extends Component {
         className={"bulpit bulpit--" + (this.state.isOpen ? 'open' : this.state.isHidden ? 'hidden' : 'closed')}
         ref={(c) => { this.bulpitWordItem = c; }}
         style={{
-          maxHeight: this.state.isHidden ? 0 : this.state.isOpen ? this.bulpitWordItem.scrollHeight : 36,
+          maxHeight: this.state.isHidden ? 0 : this.state.isOpen ? this.bulpitWordItem.scrollHeight + 15 : 36,
           marginBottom: this.state.isHidden ? 0 : 8,
           boxShadow: this.state.isHidden ? '0px 1px 5px 0px rgba(0,0,0,0)' : '0px 1px 5px 0px rgba(0,0,0,.2)',
           transitionDuration: this.state.isHidden ? '.4s' : '.2s',
