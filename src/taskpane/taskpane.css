@@ -309,3 +309,7 @@ b {
 .bulpit__synonym:hover {
   background-color: #eaeaea;
 }
+
+.spinner path {
+  /* fill: #333; */
+}

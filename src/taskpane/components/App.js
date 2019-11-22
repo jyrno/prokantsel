@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Button, ButtonType, MarqueeSelection } from "office-ui-fabric-react";
 import BulpitWordItem from "./BulpitWordItem";
 import { HeroListItem } from "./HeroList";
@@ -24,6 +24,7 @@ export default class App extends React.Component {
       listItems: [],
       bulpitWords: [],
       searchResults: [],
+      isLoading: false,
     };
     this.parseResponse = this.parseResponse.bind(this);
   }
@@ -62,6 +63,9 @@ export default class App extends React.Component {
 
   highlight = async () => {
     return Word.run(async context => {
+      this.setState({
+        isLoading: true,
+      });
       this.cleanDocument();
       let documentBody = context.document.body;
       documentBody.load("text");
@@ -88,6 +92,9 @@ export default class App extends React.Component {
       });
       // console.log("Update");
       const responseJson = await response.json();
+      this.setState({
+        isLoading: false
+      });
 
       // console.log(responseJson);
       this.parseResponse(responseJson);
@@ -243,7 +250,27 @@ export default class App extends React.Component {
             buttonType={ButtonType.hero}
             onClick={this.highlight}
           >
-            Analüüsi
+            {/* Analüüsi */}
+            {this.state.isLoading ? (
+              <svg className="spinner" width="28" height="28" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#333">
+                <g fill="none" fillRule="evenodd">
+                    <g transform="translate(1 1)" strokeWidth="2">
+                        <circle strokeOpacity=".2" cx="18" cy="18" r="18"/>
+                        <path d="M36 18c0-9.94-8.06-18-18-18">
+                            <animateTransform
+                                attributeName="transform"
+                                type="rotate"
+                                from="0 18 18"
+                                to="360 18 18"
+                                dur="1s"
+                                repeatCount="indefinite"/>
+                        </path>
+                    </g>
+                </g>
+            </svg>
+          ) : (
+            <span>Analüüsi</span>
+          )}
           </Button>
           {this.state.complexity && (
             <p className="bulpit__complexity">
