@@ -9,10 +9,10 @@ import { isObject } from "util";
 const colors = {
   'PARONUUM': '#ffcfe7',
   'NOMINALISATSIOON': '#efcfff',
-  'POOLT_TARIND': '#d3f5d4',
+  'POOLT_TARIND': '#feffcc',
   'OLEMA_KESKSONA': '#d0f5ef',
   'KANTSELIIT': '#c5d2fc',
-  'LIIGNE_MITMUS': '#feffcc',
+  'LIIGNE_MITMUS': '#d3f5d4',
   'SAAV_KAANE': '#fcebca',
   'LT_MAARSONA': '#f5d5d5'
 }
