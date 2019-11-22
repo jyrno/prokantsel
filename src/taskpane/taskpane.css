@@ -174,6 +174,7 @@ b {
 }
 
 .bulpit__word-wrapper {
+  transition: .2s ease-in-out opacity;
   display: flex;
   justify-content: space-between;
 }
@@ -201,6 +202,11 @@ b {
 .bulpit--hidden .bulpit__replace {
   opacity: 0;
   transition-delay: 0s;
+}
+
+.bulpit--hidden .bulpit__word-wrapper {
+  opacity: 0;
+  transition-delay: .2s;
 }
 
 .bulpit__examples {
@@ -244,7 +250,7 @@ b {
 }
 
 .bulpit__indicator--POOLT_TARIND {
-  background-color: #c5d2fc;
+  background-color: #d3f5d4;
 }
 
 .bulpit__indicator--OLEMA_KESKSONA {
@@ -252,7 +258,7 @@ b {
 }
 
 .bulpit__indicator--KANTSELIIT {
-  background-color: #d3f5d4;
+  background-color: #c5d2fc;
 }
 
 .bulpit__indicator--LIIGNE_MITMUS {

@@ -22,20 +22,22 @@ export default class BulpitWordItem extends Component {
   }
 
   handleIgnore = () => {
-    console.log('in handleIgnore');
+    // console.log('in handleIgnore');
     this.setState({
       isHidden: true,
       isOpen: false,
     });
+    // console.log('handleIgnore');
     setTimeout(() => {
-      const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text === this.props.word);
+      const phraseObject = this.props.searchObjects.find((searchObject) => searchObject.text.toLowerCase() === this.props.word.toLowerCase());
       this.props.onIgnore(phraseObject);
+      // console.log('triggering onIgrnore');
     }, 500);
   }
 
   handleReplace = (synonym) => {
-    console.log('in handleReplace');
-    console.log(synonym);
+    // console.log('in handleReplace');
+    // console.log(synonym);
     this.setState({
       isHidden: true,
       isOpen: false,

@@ -9,9 +9,9 @@ import { isObject } from "util";
 const colors = {
   'PARONUUM': '#ffcfe7',
   'NOMINALISATSIOON': '#efcfff',
-  'POOLT_TARIND': '#c5d2fc',
+  'POOLT_TARIND': '#d3f5d4',
   'OLEMA_KESKSONA': '#d0f5ef',
-  'KANTSELIIT': '#d3f5d4',
+  'KANTSELIIT': '#c5d2fc',
   'LIIGNE_MITMUS': '#feffcc',
   'SAAV_KAANE': '#fcebca',
   'LT_MAARSONA': '#f5d5d5'
@@ -70,9 +70,9 @@ export default class App extends React.Component {
       let documentParagraphs = context.document.body.paragraphs;
       documentParagraphs.load("text");
       await context.sync();
-      console.log("Update");
+      // console.log("Update");
 
-      const response = await fetch("https://demo2624123.mockable.io/", {
+      const response = await fetch("https://172.31.98.184:5000/check", {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -86,10 +86,10 @@ export default class App extends React.Component {
           referrer: 'no-referrer', // no-referrer, *client
           body: JSON.stringify({"text": documentBody.text})
       });
-      console.log("Update");
+      // console.log("Update");
       const responseJson = await response.json();
 
-      console.log(responseJson);
+      // console.log(responseJson);
       this.parseResponse(responseJson);
       const matchingStrings = [];
       const searchResultObjects = [];
@@ -98,43 +98,66 @@ export default class App extends React.Component {
       responseJson.analysis.forEach(async analysis => {
         if(searchedVerbs.indexOf(analysis.text) == -1)
         {
-          console.log("Searching for word: " + analysis.text);
+          // console.log("Searching for word: " + analysis.text);
           const searchResult = documentBody.search(analysis.text);
           searchedVerbs.push(analysis.text);
           searchResult.load("text");
+          // console.log('found object');
+          // console.log(searchResult);
           searchResultObjects.push(searchResult);
-          console.log(searchResult);
+          // console.log(searchResult);
         }
       });
       await context.sync();
-      console.log(searchResultObjects);
-
+      // console.log(searchResultObjects);
+      //
+      // console.log('searchResults:');
+      // console.log(searchResultObjects);
       searchResultObjects.forEach(object => {
         object.items.forEach(resultItem => {
           resultItem.load("text");
           matchingStrings.push(resultItem);
-
         });
       });
       await context.sync();
-      console.log("Not state list");
-      console.log(matchingStrings);
+      // console.log("Not state list");
+      // console.log(matchingStrings);
       this.setState(state => ({
         searchResults: matchingStrings,
       }));
 
+      // console.log('doing coloring');
+      // console.log(matchingStrings);
       matchingStrings.forEach(item => {
         item.load("text");
-        item.font.highlightColor = 'pink';
-        const itemType = responseJson.analysis.find((analysedItem) => analysedItem.text === item.text).type;
-        item.font.highlightColor = colors[itemType];
+        item.font.highlightColor = '#c5d2fc';
+        // console.log('item');
+        // console.log(item);
+        // console.log('responseJson');
+        // console.log(responseJson.analysis);
+        // console.log(responseJson.analysis);
+        // console.log(item.text);
+        const correctItem = responseJson.analysis.find((analysedItem) => analysedItem.text.toLowerCase() === item.text.toLowerCase());
+        // console.log(correctItem);
+        // console.log(correctItem.type);
+        // const itemType = responseJson.analysis.find((analysedItem) => analysedItem.text === item.text).type;
+        // console.log('item text:');
+        // console.log(item.text);
+        // console.log('itemType');
+        // console.log(itemType);
+        // console.log('color:');
+        // console.log(colors);
+        // console.log(colors[itemType]);
+        if (correctItem) {
+          item.font.highlightColor = colors[correctItem.type];
+        }
       });
       await context.sync();
 
       const complexityValue = responseJson.complexity.coef;
       const complexityDescription = responseJson.complexity.text;
-      console.log(complexityValue);
-      console.log(complexityDescription);
+      // console.log(complexityValue);
+      // console.log(complexityDescription);
     })
     .catch(function (error) {
       console.log('Error: ' + JSON.stringify(error));
@@ -152,7 +175,7 @@ export default class App extends React.Component {
       searchRes.items[0].insertText(phraseToReplaceWith, Word.InsertLocation.replace);
       await context.sync();
       this.setState(state => ({
-        bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text !== phraseObject.text),
+        bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text.toLowerCase() !== phraseObject.text.toLowerCase()),
       }));
     })
     .catch(function (error) {
@@ -162,17 +185,23 @@ export default class App extends React.Component {
   };
 
   cleanSignlePhrase = async (phraseObject) => {
+    // console.log('cleanSignlePhrase');
+    // console.log(phraseObject);
     return Word.run(async context => {
     let documentBody = context.document.body;
     documentBody.load("text");
-    let searchRes = documentBody.search(phraseObject.text);
+    let searchRes = documentBody.search(phraseObject.text.toLowerCase());
     searchRes.load("text");
     await context.sync();
     searchRes.items[0].font.highlightColor = 'white';
     searchRes.items[0].font.color = 'black';
     await context.sync();
+    // console.log('cleaning');
+    // console.log(state.bulpitWords);
+    // console.log(phraseObject.text.toLowerCase());
+    // console.log(state.bulpitWords.filter((bulpit) => bulpit.text.toLowerCase() !== phraseObject.text.toLowerCase()));
     this.setState(state => ({
-      bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text !== phraseObject.text),
+      bulpitWords: state.bulpitWords.filter((bulpit) => bulpit.text.toLowerCase() !== phraseObject.text.toLowerCase()),
     }));
   })
   .catch(function (error) {
@@ -214,7 +243,7 @@ export default class App extends React.Component {
             buttonType={ButtonType.hero}
             onClick={this.highlight}
           >
-            Analüüsi!
+            Analüüsi
           </Button>
           {this.state.complexity && (
             <p className="bulpit__complexity">
