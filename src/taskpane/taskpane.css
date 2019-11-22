@@ -109,7 +109,7 @@ b {
   margin-right: 8px;
 }
 
-.bulpit__complexity-img--bad {
+.bulpit__complexity--bad {
   font-weight: bold;
   color: #b71540;
 }
@@ -328,4 +328,9 @@ b {
 
 .spinner path {
   /* fill: #333; */
+}
+
+.bulpit__ignore-all:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
