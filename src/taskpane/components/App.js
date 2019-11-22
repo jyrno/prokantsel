@@ -27,10 +27,11 @@ export default class App extends React.Component {
       isLoading: false,
     };
     this.parseResponse = this.parseResponse.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   componentDidMount() {
-    this.highlight();
+    // this.highlight();
     this.setState({
       listItems: [
         {
@@ -59,6 +60,12 @@ export default class App extends React.Component {
       bulpitWords: responseJson.analysis,
       complexity: responseJson.complexity,
     });
+  };
+
+  handleButtonClick = () => {
+    if (!this.state.isLoading) {
+      this.highlight();
+    }
   };
 
   highlight = async () => {
@@ -246,9 +253,9 @@ export default class App extends React.Component {
       <div className="ms-welcome">
         <main className="ms-welcome__main taskpane">
           <Button
-            className="ms-welcome__action bulpit__button"
+            className={"ms-welcome__action bulpit__button bulpit__button--" + (this.state.isLoading && 'loading')}
             buttonType={ButtonType.hero}
-            onClick={this.highlight}
+            onClick={this.handleButtonClick}
           >
             {/* Analüüsi */}
             {this.state.isLoading ? (
