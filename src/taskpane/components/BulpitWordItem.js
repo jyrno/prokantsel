@@ -50,6 +50,8 @@ export default class BulpitWordItem extends Component {
 
   render() {
     const { word, type, verb, synonyms } = this.props;
+    // console.log(type);
+    // console.log(descriptions[type]);
 
     return (
       <div

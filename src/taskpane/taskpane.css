@@ -109,6 +109,11 @@ b {
   margin-right: 8px;
 }
 
+.bulpit__complexity-img--bad {
+  font-weight: bold;
+  color: #b71540;
+}
+
 .bulpit__complexity-img--bad path {
   fill: #b71540;
 }
