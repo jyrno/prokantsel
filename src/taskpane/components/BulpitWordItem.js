@@ -88,8 +88,8 @@ export default class BulpitWordItem extends Component {
           )}
         </p>
         <div className="bulpit__replace">
-          {synonyms && <span className="bulpit__replace-title">Asenda:</span>}
-          {synonyms && synonyms.map((synonym, idx) => (
+          {synonyms.length > 0 && <span className="bulpit__replace-title">Asenda:</span>}
+          {synonyms.length > 0 && synonyms.map((synonym, idx) => (
             <span className="bulpit__synonym" key={idx} onClick={() => this.handleReplace(synonym)}>{synonym}</span>
           ))}
         </div>
